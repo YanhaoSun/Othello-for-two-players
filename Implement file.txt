@@ -1,0 +1,81 @@
+Implement the board: 
+                    I divides the board into 10 parts
+                    1st: two players' names and their score
+                    2nd: first row of '---', number '1' and first row of '|'
+                    3rd: second row of '---', number '2' and second row of '|'
+                    4th: third row of '---', number '3' and third row of '|'
+                    5th: .........
+                    6th: .........
+                     .
+                     .
+                     .
+                    10th: the last row of '---', and alphabets 'a' to 'h', but no        
+                          number and no '|' here.
+
+
+
+
+
+Implement the players:
+                    I use structure: struct name{             
+                                         char player1[MAX];
+                                         char player2[MAX];
+                                     };
+                    to store users' names, before every time I print board, I use the statement: 
+printf("  Score: %s (Black) %d:%d %s (White)\n", players.player1, number.score1, number.score2, players.player2); to print users' names.
+                                 
+
+
+
+
+
+Implement the disks:
+                    disks are stored in the 2-D array called 'dis', and every time the user enters disks from keyboard, the value will be stored in array 'dis', and when sub-function 'void dis_board(void)' is called, one '|' is printed out, one disk in the array 'dis' will be printed out.
+
+
+
+
+Implement the game logic:
+                    I start from black disk: 
+ 1st: horizontal, there is a square, 
+  If the left of the square is 'W', and right of the square is 'B', black space or outside of the board, then I only consider left of the square, if there is a 'B' on the left of the 'W', then this square is valid, if there is a blank space, then this is not valid, 
+  However, there is another possibility, if there is a 'B' on the left side of the two, three, four... 'W', then this square is valid.  If the right side of the square is 'W', this is the same as above.
+  If both the right side and left side of the square are 'W', then we need to consider both sides to see if there are black space, 'B' and 'W' before and after the two 'W', or the square before and after the two 'W' are outside off the board.
+ 2nd: vertical, this is the same as horizontal, we can rotate the board 90 degrees and the vertical become horizontal, and we can use the method above to implement the vertical game logic.
+ 3rd: for diagonal, we can rotate the board 45 degrees, and the logic of horizontal can also be used in diagonal, however there is one thing need to know, the left diagonal and the right diagonal is different, for left diagonal, we can arrive next square by adding or subtracting 1 for both x-axis and y-axis, but for right diagonal, we need x-axis plus 1 and y-axis minus 1 or x-axis minus 1 and y-axis plus 1 to arrive next square. This is different from horizontal and vertical direction.
+
+
+
+
+
+
+Implement the game duration and date:
+                    We need to use #include <time.h>, data type time_t, build in function time(&  ); and localtime(&  );
+                    
+Code: 
+  int time_start, time_end, duration_min, duration_sec;
+
+  time_t tal_ptr;                //declare a variable called tal_ptr, type is time_t
+
+  struct tm *tmp_ptr = NULL;     //declare a pointer, and the type is struct tm
+
+  time(&tal_ptr);                //obtain the current system time
+
+  tmp_ptr = localtime(&tal_ptr); //obtain the current system time
+
+  time_start=tmp_ptr->tm_hour*3600+tmp_ptr->tm_min*60+tmp_ptr->tm_sec;       
+                                 //this is the time of game begins and transfer time  
+                                   from hours into seconds
+
+  
+  time(&tal_ptr);                   //obtain the current system time again
+
+  tmp_ptr = localtime(&tal_ptr);    //obtain the current system time
+
+  time_end=tmp_ptr->tm_hour*3600+tmp_ptr->tm_min*60+tmp_ptr->tm_sec;         
+                                    //this is the time of game ends and transfer time 
+                                      from hours into seconds
+
+  duration_min=(time_end-time_start)/60;  //game duration in minutes
+
+  duration_sec=(time_end-time_start)%60;  //game duration in seconds
